@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            html, body{
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+            }
+            body{
+                background-image: url(https://static.vecteezy.com/ti/vettori-gratis/p1/7162597-verde-erba-fresca-erba-senza-cuciture-ripetizione-sfondo-camomilla-in-erba-texture-estate-primavera-prato-prato-erba-erba-illustrazione-modello-eco-natura-vegana-gratuito-vettoriale.jpg);
+
+            }
+            #boxCow{
+                position: absolute;
+                width: 300px;
+                height: 300px;
+                background-image: url("images/cow1.png");
+                background-repeat: no-repeat;
+                background-size: cover;
+                margin-top: 0px;
+                margin-left: 0px;
+                margin-right: 0px;
+                margin-bottom: 0px;
+            }
+            #boxShooter{
+                position: absolute;
+                width: 300px;
+                height: 300px;
+                background-image: url("images/shooter.png");
+                background-repeat: no-repeat;
+                background-size: cover;
+                margin-top: 0px;
+                margin-left: 0px;
+                margin-right: 0px;
+                margin-bottom: 0px;
+            }
+            #boxBullet{
+                position: absolute;
+                width: 100px;
+                height: 100px;
+                background-image: url("images/bullet.png");
+                background-repeat: no-repeat;
+                background-size: cover;
+                margin-top: 0px;
+                margin-left: 0px;
+                margin-right: 0px;
+                margin-bottom: 0px;
+                visibility: hidden;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="boxCow"></div>
+        <div id="boxShooter"></div>
+        <div id="boxBullet"></div>
+        <script>
+            /** Cow below **/
+            let boxCow = document.getElementById("boxCow");
+            let pleftCow=0;
+            let ptopCow=0;
+            let latoDestro=true;
+
+            boxCow.style.left=pleftCow+'px';
+            boxCow.style.top=ptopCow+'px';
+
+            function spostalato() {
+                if (latoDestro) {
+                    if(pleftCow + 5 > 0 && pleftCow + 5 < screen.availWidth-310){
+                        pleftCow = pleftCow + 5;
+                    }else{
+                        latoDestro = false;
+                        boxCow.style.backgroundImage = "url('images/cow2.png')";
+                    }
+                }else{
+                    if(pleftCow - 5 > 0 && pleftCow - 5 < screen.availWidth-310){
+                        pleftCow = pleftCow - 5;
+                    }else{
+                        latoDestro = true;
+                        boxCow.style.backgroundImage = "url('images/cow1.png')";
+                    }
+                }
+                boxCow.style.left = pleftCow + "px";
+            }
+            window.setInterval(
+                spostalato,
+                10
+            )
+
+
+            /** Shooter below **/
+            let boxShooter = document.getElementById("boxShooter");
+            let pleftShooter=window.innerWidth / 2 - 150;
+            let ptopShooter=window.innerHeight - 310;
+            boxShooter.style.left=pleftShooter+'px';
+            boxShooter.style.top=ptopShooter+'px';
+
+            document.addEventListener('keydown', function(event){
+                
+                if(event.key === "a" || event.key === "A"){
+                    if(pleftShooter + -10 > 0 && pleftShooter + -10 < window.innerWidth - 300){
+                        pleftShooter += -10;
+                    }
+                }
+                if(event.key === "d" || event.key === "D"){
+                    if(pleftShooter + 10 > 0 && pleftShooter + 10 < window.innerWidth - 300){
+                        pleftShooter += 10;
+                    }
+                }
+                boxShooter.style.left = pleftShooter + "px";
+            });
+
+
+            /** Bullet below **/
+            let boxBullet = document.getElementById("boxBullet");
+            let pleftBullet=pleftShooter+180;
+            let ptopBullet=ptopShooter;
+            boxBullet.style.left=pleftBullet+'px';
+            boxBullet.style.top=ptopBullet+'px';
+
+            let sparaFlag = false
+
+            function spara() {
+                if (sparaFlag) {
+                    boxBullet.style.visibility="visible";
+
+                    if(ptopBullet > 0) {
+                        ptopBullet = ptopBullet - 5;
+                    }else{
+                        boxBullet.style.visibility="hidden";
+                        sparaFlag = false
+                    }
+
+                    if(ptopBullet <= ptopCow+300){
+                        if(pleftBullet+100 >= pleftCow && pleftBullet <= pleftCow+300){
+                            boxBullet.style.visibility="hidden"
+                            sparaFlag = false
+                            alert("Hai vinto")
+                        }
+                    }
+
+                    boxBullet.style.top = ptopBullet + "px";
+                }
+            }
+
+            window.setInterval(
+                spara,
+                10
+            )
+
+            document.addEventListener('keydown', function(event){
+
+                if(event.key === "e" || event.key === "E"){
+                    ptopBullet=ptopShooter;
+                    pleftBullet=pleftShooter+180;
+
+                    sparaFlag = true
+                }
+
+                boxBullet.style.top = ptopBullet + "px";
+                boxBullet.style.left = pleftBullet + "px";
+            });
+        </script>
+    </body>
+</html>
